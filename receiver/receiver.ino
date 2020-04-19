@@ -12,7 +12,7 @@
 #define SS      18   // GPIO18 -- SX1278's CS
 #define RST     14   // GPIO14 -- SX1278's RESET
 #define DI0     26   // GPIO26 -- SX1278's IRQ(Interrupt Request)
-#define BAND    868E6
+#define BAND    433E6
 
 #define OLED_SDA 21
 #define OLED_SCL 22 
@@ -40,6 +40,7 @@ void cbk(int packetSize) {
   for (int i = 0; i < packetSize; i++) { packet += (char) LoRa.read(); }
   String rssi = "RSSI " + String(LoRa.packetRssi(), DEC) ;
   displayData(packet, rssi);
+  Serial.println("Got packet");
 }
 
 void initDisplay()
@@ -75,9 +76,14 @@ void setup() {
   Serial.println("LoRa Receiver Callback");
   SPI.begin(SCK,MISO,MOSI,SS);
   LoRa.setPins(SS,RST,DI0);  
-  if (!LoRa.begin(868E6)) {
+  if (!LoRa.begin(BAND)) {
     Serial.println("Starting LoRa failed!");
     while (1);
+  }
+  else
+  {
+    Serial.print("initialized LORA on band");
+    Serial.println(BAND);
   }
   //LoRa.onReceive(cbk);
   LoRa.receive();
