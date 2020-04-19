@@ -10,7 +10,7 @@
 #define MISO    19   // GPIO19 -- SX1278's MISO
 #define MOSI    27   // GPIO27 -- SX1278's MOSI
 #define SS      18   // GPIO18 -- SX1278's CS
-#define RST     14   // GPIO14 -- SX1278's RESET
+#define RST     23   // GPIO23 -- SX1278's RESET
 #define DI0     26   // GPIO26 -- SX1278's IRQ(Interrupt Request)
 #define BAND    433E6
 
@@ -86,7 +86,7 @@ void setup() {
     Serial.println(BAND);
   }
   //LoRa.onReceive(cbk);
-  //LoRa.receive();
+  LoRa.receive();
   Serial.println("init ok");
 
   initDisplay();
@@ -106,7 +106,7 @@ void loop() {
 
   // send packet
   LoRa.beginPacket();
-  LoRa.print("hello ");
+  LoRa.print("sensor data: ");
   LoRa.print(counter);
   LoRa.endPacket();
 
